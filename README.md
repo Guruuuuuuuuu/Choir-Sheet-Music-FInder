@@ -12,10 +12,11 @@ A bot that interprets natural language instructions to find sheet music based on
   - Ensemble names (Capriccio, Rhapsody, etc.)
   - Additional keywords
 
-- **Flexible API Integration**: Supports multiple API backends:
-  - Web search APIs (Google Custom Search, etc.)
-  - OpenAI API
-  - Mock mode for testing (default)
+- **CPDL API Integration**: Primary integration with Choral Public Domain Library (CPDL) using MediaWiki API
+  - Searches the extensive CPDL database of public domain choral music
+  - Extracts composer, voicing, and piece information
+  - Returns direct links to sheet music pages
+  - No API key required!
 
 - **Structured Results**: Returns formatted results with:
   - Title and composer
@@ -32,6 +33,8 @@ A bot that interprets natural language instructions to find sheet music based on
 pip install -r requirements.txt
 ```
 
+**Note**: The bot uses the CPDL (Choral Public Domain Library) API by default, which requires the `requests` library. No API key is needed for CPDL!
+
 ## Usage
 
 ### Basic Usage
@@ -39,8 +42,8 @@ pip install -r requirements.txt
 ```python
 from music_finder_bot import MusicFinderBot
 
-# Initialize bot
-bot = MusicFinderBot()
+# Initialize bot with CPDL API (default, no API key needed)
+bot = MusicFinderBot(api_type="cpdl")
 
 # Process an instruction
 instruction = "Possible pieces for Capriccio: SATB that use overtone singing. And that are on the Spring Earth theme."
@@ -99,17 +102,24 @@ bot = MusicFinderBot(api_key="YOUR_API_KEY", api_type="web_search")
 
 ## API Integration
 
-The bot is designed to work with various APIs. Currently, it includes:
+The bot supports multiple API backends:
 
-- **Mock Mode** (default): Returns sample results based on parsed parameters
+- **CPDL API** (default): Uses Choral Public Domain Library's MediaWiki API
+  - No API key required
+  - Searches thousands of public domain choral pieces
+  - Returns direct links to sheet music
+  - Usage: `bot = MusicFinderBot(api_type="cpdl")`
+
+- **Mock Mode**: Returns sample results for testing
+  - Usage: `bot = MusicFinderBot(api_type="mock")`
+
 - **Web Search API**: Ready for Google Custom Search API integration
+  - Requires API key
+  - Usage: `bot = MusicFinderBot(api_key="YOUR_KEY", api_type="web_search")`
+
 - **OpenAI API**: Ready for OpenAI API integration
-
-To integrate a real API:
-
-1. Get an API key from your chosen service
-2. Update the `_web_search` or `_openai_search` methods in `SheetMusicAPI` class
-3. Initialize the bot with your API key
+  - Requires API key
+  - Usage: `bot = MusicFinderBot(api_key="YOUR_KEY", api_type="openai")`
 
 ## Extending the Bot
 
